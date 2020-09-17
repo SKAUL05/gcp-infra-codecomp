@@ -30,6 +30,7 @@ jobs:
       run: |-
         echo $BUCKET_NAME
         gsutil mb gs://$BUCKET_NAME || echo "Bucket Already Exists"
+        gsutil versioning set on gs://$BUCKET_NAME || echo "Versioning Already Enabled"
 
   terraform:
     name: 'Terraform'
@@ -49,9 +50,8 @@ jobs:
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: |-
-        backend_config="-backend-config='bucket=$BUCKET_NAME'"       
-        terraform init -backend-config='credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' $backend_config
+      run: |-     
+        terraform init -backend-config='credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -backend-config "bucket=$BUCKET_NAME"
 
         
     # Generates an execution plan for Terraform
