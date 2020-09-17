@@ -8,7 +8,6 @@ variable "service_list" {
     type = list
     default = [
 	"cloudresourcemanager.googleapis.com",
-    "serviceusage.googleapis.com",
     "logging.googleapis.com",
     "iam.googleapis.com",
     "admin.googleapis.com",
