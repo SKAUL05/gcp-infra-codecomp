@@ -7,7 +7,6 @@ variable "service_list" {
     description = "List of Services to be Enabled"
     type = list
     default = [
-	"cloudresourcemanager.googleapis.com",
     "logging.googleapis.com",
     "iam.googleapis.com",
     "admin.googleapis.com",
