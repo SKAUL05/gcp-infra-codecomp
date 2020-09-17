@@ -3,28 +3,8 @@ variable "project" {
   type = string
 }
 
-variable "bucket" {
-  description = "Name of bucket used for storing terraform state"
-  default = "codecomp3-gcp"
-}
-
-variable "region" {
-  default = "us-central1"
-}
-
-variable "appengineLocation" {
-  default = "us-central"
-}
-
-variable "zone" {
-  default = "us-central1-f"
-}
-
-variable "credentials" {
-  type = string
-}
-
 variable "service_list" {
+    description = "List of Services to be Enabled"
     type = list
     default = [
 	"cloudresourcemanager.googleapis.com",
