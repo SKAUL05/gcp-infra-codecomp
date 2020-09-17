@@ -7,7 +7,7 @@ on:
 
 env:
   GCP_PROJECT: ${{ secrets.PROJECT_ID }}
-  BUCKET_NAME: 'codecomp3-ongcp-${{ secrets.PROJECT_ID }}'
+  BUCKET_NAME: 'codecomp3ongcp-${{ secrets.PROJECT_ID }}'
 
 jobs:
   create-gcp-bucket:
