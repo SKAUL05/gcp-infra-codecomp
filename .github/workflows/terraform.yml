@@ -26,9 +26,8 @@ jobs:
         project_id: ${{ secrets.PROJECT_ID }}
         export_default_credentials: true 
     
-    - name: 'Create-bucket-for-tf-state'
+    - name: 'Create Bucket & Enable Object Versioning'
       run: |-
-        echo $BUCKET_NAME
         gsutil mb gs://$BUCKET_NAME || echo "Bucket Already Exists"
         gsutil versioning set on gs://$BUCKET_NAME || echo "Versioning Already Enabled"
 
