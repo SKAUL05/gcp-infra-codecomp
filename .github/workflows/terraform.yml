@@ -8,7 +8,6 @@ on:
 env:
   GCP_PROJECT: ${{ secrets.PROJECT_ID }}
   BUCKET_NAME: 'codecomp3ongcp-${{ secrets.PROJECT_ID }}'
-  BRANCH_MAP: ( ["master"]="int" ["int"]="int")
 
 jobs:
   create-gcp-bucket:
@@ -51,6 +50,7 @@ jobs:
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
       run: |-   
+        BRANCH_MAP=( ["master"]="int" ["int"]="int")
         branch_name="${GITHUB_REF##*/}"
         echo ${branch_name}
         echo "${BRANCH_MAP["${branch_name}"]}"
