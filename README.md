@@ -1,4 +1,4 @@
-# CodeComp3-Provisioning infrastructure
+# CodeComp3-Provisioning Infrastructure
 
 ## Step-by-step guide
 
