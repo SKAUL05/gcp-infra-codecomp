@@ -51,8 +51,13 @@ jobs:
     - name: Terraform Init
       run: |-  
         declare -A branch_map=( ["master"]="prod" ["dev"]="int")
-        branch_name="${GITHUB_REF##*/}"
-        branch_dir="${branch_map["${branch_name}"]}"
+        branch_name="new"
+        if [ -v branch_map[${branch_name}] ];then
+          branch_dir="${branch_map[${branch_name}]}"
+        else
+          echo "Branch ${branch_name} doesn't exist in map. Initializing with Int Module"
+          branch_dir="int"
+        fi
         cd env/${branch_dir}
         terraform init -backend-config='credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -backend-config "bucket=$BUCKET_NAME"
 
@@ -65,10 +70,9 @@ jobs:
         if [ -v branch_map[${branch_name}] ];then
           branch_dir="${branch_map[${branch_name}]}"
         else
-          echo "Branch ${branch_name} doesn't exist in map"
-          exit 1
+          echo "Branch ${branch_name} doesn't exist in map. Initializing with Int Module"
+          branch_dir="int"
         fi
-        
         cd env/${branch_dir}
         terraform plan -var 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -var "project=$GCP_PROJECT"
 
@@ -77,7 +81,12 @@ jobs:
     - name: Terraform Apply
       run: |-
         declare -A branch_map=( ["master"]="prod" ["dev"]="int")
-        branch_name="${GITHUB_REF##*/}"
-        branch_dir="${branch_map["${branch_name}"]}"
-        cd env/${branch_dir}
-        terraform apply -var 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -var "project=$GCP_PROJECT" -auto-approve
+        branch_name="new"
+        if [ -v branch_map[${branch_name}] ];then
+          branch_dir="${branch_map[${branch_name}]}"
+          cd env/${branch_dir}
+          terraform apply -var 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -var "project=$GCP_PROJECT" -auto-approve
+        else
+          echo "Branch ${branch_name} doesn't exist in map, not running apply"
+        fi
+        
