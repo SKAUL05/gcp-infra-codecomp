@@ -4,7 +4,10 @@ on:
   push:
     branches:
       - master
-
+      - dev
+  pull_request:
+    branches:
+      - '*'
 env:
   GCP_PROJECT: ${{ secrets.PROJECT_ID }}
   BUCKET_NAME: 'codecomp3ongcp-${{ secrets.PROJECT_ID }}'
@@ -51,7 +54,7 @@ jobs:
     - name: Terraform Init
       run: |-  
         declare -A branch_map=( ["master"]="prod" ["dev"]="int")
-        branch_name="new"
+        branch_name="${GITHUB_REF##*/}"
         if [ -v branch_map[${branch_name}] ];then
           branch_dir="${branch_map[${branch_name}]}"
         else
@@ -66,7 +69,7 @@ jobs:
     - name: Terraform Plan
       run: |-
         declare -A branch_map=( ["master"]="prod" ["dev"]="int")
-        branch_name="new"
+        branch_name="${GITHUB_REF##*/}"
         if [ -v branch_map[${branch_name}] ];then
           branch_dir="${branch_map[${branch_name}]}"
         else
@@ -81,7 +84,7 @@ jobs:
     - name: Terraform Apply
       run: |-
         declare -A branch_map=( ["master"]="prod" ["dev"]="int")
-        branch_name="new"
+        branch_name="${GITHUB_REF##*/}"
         if [ -v branch_map[${branch_name}] ];then
           branch_dir="${branch_map[${branch_name}]}"
           cd env/${branch_dir}
