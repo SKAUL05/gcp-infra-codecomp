@@ -53,7 +53,7 @@ jobs:
       run: |-   
         branch_name="${GITHUB_REF##*/}"
         echo ${branch_name}
-        echo "${BRANCH_MAP[${branch_name}]}"
+        echo "${BRANCH_MAP["${branch_name}"]}"
         cd env/int
         terraform init -backend-config='credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -backend-config "bucket=$BUCKET_NAME"
 
