@@ -54,7 +54,9 @@ jobs:
     - name: Terraform Init
       run: |-  
         declare -A branch_map=( ["master"]="prod" ["dev"]="int")
-        branch_name="${{ github.base_ref }}"
+        branch_name="${GITHUB_REF##*/}"
+        if branch_name == "merge"; then
+          branch_name="${{ github.base_ref }}"
         if [ -v branch_map[${branch_name}] ];then
           branch_dir="${branch_map[${branch_name}]}"
         else
@@ -69,7 +71,9 @@ jobs:
     - name: Terraform Plan
       run: |-
         declare -A branch_map=( ["master"]="prod" ["dev"]="int")
-        branch_name="${{ github.base_ref }}"
+        branch_name="${GITHUB_REF##*/}"
+        if branch_name == "merge"; then
+          branch_name="${{ github.base_ref }}"
         if [ -v branch_map[${branch_name}] ];then
           branch_dir="${branch_map[${branch_name}]}"
         else
@@ -84,7 +88,9 @@ jobs:
     - name: Terraform Apply
       run: |-
         declare -A branch_map=( ["master"]="prod" ["dev"]="int")
-        branch_name="${{ github.base_ref }}"
+        branch_name="${GITHUB_REF##*/}"
+        if branch_name == "merge"; then
+          branch_name="${{ github.base_ref }}"
         if [ -v branch_map[${branch_name}] ] &&  ${{ github.event_name == 'push' }};then
           branch_dir="${branch_map[${branch_name}]}"
           cd env/${branch_dir}
