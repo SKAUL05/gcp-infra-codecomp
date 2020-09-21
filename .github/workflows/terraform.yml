@@ -55,7 +55,6 @@ jobs:
       run: |-  
         declare -A branch_map=( ["master"]="prod" ["dev"]="int")
         branch_name="${{ github.base_ref }}"
-        echo $branch_name
         if [ -v branch_map[${branch_name}] ];then
           branch_dir="${branch_map[${branch_name}]}"
         else
@@ -86,11 +85,11 @@ jobs:
       run: |-
         declare -A branch_map=( ["master"]="prod" ["dev"]="int")
         branch_name="${GITHUB_REF##*/}"
-        if [ -v branch_map[${branch_name}] ];then
+        if [ -v branch_map[${branch_name}] ] &&  [github.event_name == 'push'];then
           branch_dir="${branch_map[${branch_name}]}"
           cd env/${branch_dir}
           terraform apply -var 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -var "project=$GCP_PROJECT" -auto-approve
         else
-          echo "Branch ${branch_name} doesn't exist in map, not running apply"
+          echo "Branch ${branch_name} doesn't exist in map or pull_request found"
         fi
         
