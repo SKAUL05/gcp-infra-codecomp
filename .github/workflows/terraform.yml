@@ -57,6 +57,7 @@ jobs:
         branch_name="${GITHUB_REF##*/}"
         if branch_name == "merge"; then
           branch_name="${{ github.base_ref }}"
+        fi
         if [ -v branch_map[${branch_name}] ];then
           branch_dir="${branch_map[${branch_name}]}"
         else
@@ -74,6 +75,7 @@ jobs:
         branch_name="${GITHUB_REF##*/}"
         if branch_name == "merge"; then
           branch_name="${{ github.base_ref }}"
+        fi
         if [ -v branch_map[${branch_name}] ];then
           branch_dir="${branch_map[${branch_name}]}"
         else
@@ -91,6 +93,7 @@ jobs:
         branch_name="${GITHUB_REF##*/}"
         if branch_name == "merge"; then
           branch_name="${{ github.base_ref }}"
+        fi
         if [ -v branch_map[${branch_name}] ] &&  ${{ github.event_name == 'push' }};then
           branch_dir="${branch_map[${branch_name}]}"
           cd env/${branch_dir}
