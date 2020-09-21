@@ -85,7 +85,8 @@ jobs:
       run: |-
         declare -A branch_map=( ["master"]="prod" ["dev"]="int")
         branch_name="${{ github.base_ref }}"
-        if [ -v branch_map[${branch_name}] ] &&  [github.event_name == 'push'];then
+        echo ${{ github.event_name }}
+        if [ -v branch_map[${branch_name}] ] &&  [${{ github.event_name }} == 'push'];then
           branch_dir="${branch_map[${branch_name}]}"
           cd env/${branch_dir}
           terraform apply -var 'credentials=${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}' -var "project=$GCP_PROJECT" -auto-approve
