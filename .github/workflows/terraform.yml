@@ -54,7 +54,8 @@ jobs:
     - name: Terraform Init
       run: |-  
         declare -A branch_map=( ["master"]="prod" ["dev"]="int")
-        branch_name="${GITHUB_REF##*/}"
+        branch_name="${{ github.base_ref }}"
+        echo $branch_name
         if [ -v branch_map[${branch_name}] ];then
           branch_dir="${branch_map[${branch_name}]}"
         else
